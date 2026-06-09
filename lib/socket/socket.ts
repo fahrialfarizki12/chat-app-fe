@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-export const socket = io(process.env.NEXT_PUBLIC_API, {
+export const socket = io(process.env.NEXT_PUBLIC_URL, {
   autoConnect: false,
   withCredentials: true,
 });
