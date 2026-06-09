@@ -47,24 +47,26 @@ export default function ChatUI() {
     console.log("users updated:", getUsers);
   }, [getUsers]);
 
-  // real time
-
   useEffect(() => {
-    socket.connect();
-    socket.on("connect", () => {
+    const onConnect = () => {
       console.log("connected:", socket.id);
-    });
+    };
 
-    socket.on("message", (data) => {
+    const onMessage = (data: any) => {
       setDataMessage((prev) => [...prev, data]);
-      console.log(data);
-    });
+    };
+
+    socket.on("connect", onConnect);
+    socket.on("message", onMessage);
+
+    socket.connect();
 
     return () => {
+      socket.off("connect", onConnect);
+      socket.off("message", onMessage);
       socket.disconnect();
     };
   }, []);
-
   // useForm
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
